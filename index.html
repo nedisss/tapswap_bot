@@ -4,28 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TapSwap Žaidimas</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
-        #coin {
-            width: 100px;
-            height: 100px;
-            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Gold_coin_icon.svg/512px-Gold_coin_icon.svg.png') no-repeat center;
-            background-size: cover;
-            display: block;
-            margin: 20px auto;
-            cursor: pointer;
-        }
-        #shop button {
-            margin: 5px;
-            padding: 10px;
-            font-size: 16px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>TapSwap Žaidimas</h1>
@@ -38,59 +17,12 @@
         <button onclick="buyUpgrade(3, 1500, 100)">+100 Tap (1500 taškų)</button>
         <button onclick="buyBot(20000, 3)">Automatinis Botas (20,000 taškų)</button>
     </div>
+    <p id="botStatus" style="display: none;">Boto likęs laikas: <span id="botTimer">60:00</span></p>
     
-    <script>
-        let score = 0;
-        let perTap = 1;
-        let botActive = false;
-
-        document.getElementById("coin").addEventListener("click", function() {
-            score += perTap;
-            updateScore();
-        });
-
-        function updateScore() {
-            document.getElementById("score").innerText = score;
-        }
-
-        function buyUpgrade(level, cost, bonus) {
-            if (score >= cost) {
-                score -= cost;
-                perTap = bonus;
-                updateScore();
-                alert("Dabar už paspaudimą gauni: " + perTap);
-            } else {
-                alert("Tau trūksta taškų!");
-            }
-        }
-
-        function buyBot(cost, multiplier) {
-            if (score >= cost && !botActive) {
-                score -= cost;
-                updateScore();
-                botActive = true;
-                alert("Automatinis botas įjungtas 60 minučių!");
-                setInterval(() => {
-                    score += perTap * multiplier;
-                    updateScore();
-                }, 2000);
-                
-                setTimeout(() => {
-                    botActive = false;
-                    alert("Boto laikas baigėsi!");
-                }, 3600000);
-            } else {
-                alert("Tau trūksta taškų arba botas jau veikia!");
-            }
-        }
-
-        // Telegram WebApp Init
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-    </script>
+    <script src="script.js" defer></script>
 </body>
 </html>
 
-
-<link rel="stylesheet" href="style.css">
-<script src="script.js" defer></script>
+<div id="coin">
+    <img src="coin.png" alt="Moneta" style="width: 150px; height: 150px; border-radius: 50%; cursor: pointer;">
+</div>

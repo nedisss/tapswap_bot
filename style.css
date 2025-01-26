@@ -57,3 +57,22 @@ button:disabled {
     background-color: gray;
     cursor: not-allowed;
 }
+#botStatus {
+    font-size: 20px;
+    margin-top: 20px;
+    color: #ffcc00;
+}
+#coin {
+    width: 150px;
+    height: 150px;
+    background: url('coin.png') no-repeat center; /* Naudoja tavo paveikslėlį */
+    background-size: cover;
+    border-radius: 50%; /* Jei nori apskritimo */
+    cursor: pointer;
+    display: inline-block;
+    transition: transform 0.1s;
+}
+
+#coin:active {
+    transform: scale(0.9); /* Efektas paspaudus */
+}
