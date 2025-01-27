@@ -1,152 +1,117 @@
-let tg = window.Telegram.WebApp;
-tg.expand(); // Expands the WebApp
+let score = 0;
+let tswapBalance = 0;
+let perClick = 1;
+let language = 'lt'; // Kalba
+let upgradeLevels = [
+    { cost: 50, bonus: 2 },
+    { cost: 150, bonus: 4 },
+    { cost: 250, bonus: 8 },
+    { cost: 799, bonus: 24 }
+];
+let currentUpgrade = 0;
 
-// Get user ID from Telegram
-const userId = tg.initDataUnsafe?.user?.id || "guest";
-
-// Initialize score (use localStorage for persistence)
-let score = parseInt(localStorage.getItem("tswap_score")) || 0;
-let perTap = 1;
-let botActive = false;
-let language = localStorage.getItem("language") || "lt";
-const upgradeLevels = Array.from({ length: 24 }, (_, i) => ({
-    cost: 200 + i * 100,
-    bonus: i + 1,
-}));
-
-// Language translations
 const translations = {
     lt: {
         balance: "Balansas",
+        tswap: "TSwap",
+        click: "Spauskite monetą, kad uždirbtumėte taškus",
         shop: "Parduotuvė",
-        buyBot: "Automatinis Botas (100,000 TSwap)",
-        botExpired: "Boto laikas baigėsi!",
-        tap: "Spauskite moneta, kad gautumėte taškų",
+        buyUpgrade: "Nusipirkite patobulinimą",
+        insufficientPoints: "Trūksta taškų!",
+        upgradeSuccess: "Patobulinimas įsigytas!",
+        languageChange: "Kalbos pakeitimas"
     },
     en: {
         balance: "Balance",
+        tswap: "TSwap",
+        click: "Click the coin to earn points",
         shop: "Shop",
-        buyBot: "Auto Bot (100,000 TSwap)",
-        botExpired: "Bot time expired!",
-        tap: "Click the coin to earn points",
+        buyUpgrade: "Buy upgrade",
+        insufficientPoints: "Not enough points!",
+        upgradeSuccess: "Upgrade purchased!",
+        languageChange: "Language Change"
     },
     ru: {
         balance: "Баланс",
+        tswap: "TSwap",
+        click: "Нажмите на монету, чтобы заработать очки",
         shop: "Магазин",
-        buyBot: "Автобот (100,000 TSwap)",
-        botExpired: "Время бота истекло!",
-        tap: "Нажмите на монету, чтобы заработать очки",
-    },
+        buyUpgrade: "Купить улучшение",
+        insufficientPoints: "Недостаточно очков!",
+        upgradeSuccess: "Улучшение куплено!",
+        languageChange: "Изменить язык"
+    }
 };
 
-// Change language and update text
-function updateLanguage() {
-    document.getElementById("balance").innerText = `${translations[language].balance}: ${score} TSwap`;
-    document.getElementById("shop-button").innerText = translations[language].shop;
-    document.getElementById("buy-bot").innerText = translations[language].buyBot;
-    document.getElementById("coin").innerText = "💰";
-    document.getElementById("game-name").innerText = translations[language].tap;
-}
-
-// Toggle shop visibility
-function toggleShop() {
-    const shop = document.getElementById("shop");
-    shop.style.display = shop.style.display === "none" ? "block" : "none";
-    if (shop.style.display === "block") renderUpgrades();
-}
-
-// Render upgrades in the shop
-function renderUpgrades() {
-    const upgradesContainer = document.getElementById("upgrades");
-    upgradesContainer.innerHTML = "";
-    upgradeLevels.forEach((level, index) => {
-        const button = document.createElement("button");
-        button.innerText = `+${level.bonus} Tap (${level.cost} TSwap)`;
-        button.onclick = () => buyUpgrade(index + 1, level.cost, level.bonus);
-        upgradesContainer.appendChild(button);
-    });
-}
-
-// Click event for coin
-document.getElementById("coin").addEventListener("click", function () {
-    score += perTap;
-    updateScore();
-    saveScore();
-});
-
-// Save score to localStorage
-function saveScore() {
-    localStorage.setItem("tswap_score", score);
-}
-
-// Update the displayed score
-function updateScore() {
-    document.getElementById("balance").innerText = `${translations[language].balance}: ${score} TSwap`;
-}
-
-// Buy an upgrade
-function buyUpgrade(level, cost, bonus) {
-    if (score >= cost) {
-        score -= cost;
-        perTap = bonus;
-        updateScore();
-        saveScore();
-        alert(`Now you earn: ${perTap} per tap!`);
-    } else {
-        alert("You don't have enough points!");
-    }
-}
-
-// Buy Auto Bot
-function buyBot() {
-    const cost = 100000;
-    if (score >= cost && !botActive) {
-        score -= cost;
-        botActive = true;
-        updateScore();
-        saveScore();
-
-        const botStatus = document.getElementById("botStatus");
-        botStatus.style.display = "block";
-
-        let timeLeft = 3600; // 60 minutes
-        const botTimer = document.getElementById("botTimer");
-
-        const interval = setInterval(() => {
-            score += 120; // Bot earns 120 TSwap every 0.5 second
-            updateScore();
-            saveScore();
-
-            timeLeft--;
-            botTimer.textContent = formatTime(timeLeft);
-
-            if (timeLeft <= 0) {
-                clearInterval(interval);
-                botActive = false;
-                botStatus.style.display = "none";
-                alert(translations[language].botExpired);
-            }
-        }, 500);
-    } else {
-        alert("You don't have enough points or the bot is already active!");
-    }
-}
-
-// Format time for bot countdown
-function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
-}
-
-// Change language
+// Funckija, kuri padeda pakeisti žaidimo kalbą
 function changeLanguage(lang) {
     language = lang;
-    localStorage.setItem("language", lang); // Save selected language to localStorage
-    updateLanguage();
-    renderUpgrades();
+    document.getElementById("score-text").innerText = `${translations[language].balance}: ${score} TSwap`;
+    document.getElementById("tswap-balance").innerText = `${translations[language].tswap}: ${tswapBalance}`;
+    document.getElementById("coin").innerText = "💰";
+    document.getElementById("shop").innerText = translations[language].shop;
+    document.getElementById("profile-menu").style.display = "none";
 }
 
-// Initial setup
-updateLanguage();
+// Pagrindinė funkcija, kuri vyksta kai paspaudi monetą
+function earnPoints() {
+    score += perClick;
+    updateScore();
+}
+
+// Atnaujina žaidimo taškus ir TSwap balansą
+function updateScore() {
+    document.getElementById("score-text").innerText = `${translations[language].balance}: ${score} TSwap`;
+    tswapBalance = Math.floor(score / 1000);
+    document.getElementById("tswap-balance").innerText = `${translations[language].tswap}: ${tswapBalance}`;
+    saveScore();
+}
+
+// Išsaugo žaidimo taškus į localStorage
+function saveScore() {
+    localStorage.setItem("score", score);
+    localStorage.setItem("tswapBalance", tswapBalance);
+}
+
+// Atidaro ir uždaro parduotuvę
+function toggleShop() {
+    const shopMenu = document.getElementById("shop-menu");
+    if (shopMenu.style.display === "none") {
+        shopMenu.style.display = "block";
+        renderUpgrades();
+    } else {
+        shopMenu.style.display = "none";
+    }
+}
+
+// Pirkimo patobulinimas
+function buyUpgrade(level) {
+    if (score >= upgradeLevels[level].cost) {
+        score -= upgradeLevels[level].cost;
+        perClick = upgradeLevels[level].bonus;
+        updateScore();
+        alert(translations[language].upgradeSuccess);
+    } else {
+        alert(translations[language].insufficientPoints);
+    }
+}
+
+// Rodo patobulinimų sąrašą
+function renderUpgrades() {
+    const upgradesContainer = document.getElementById("upgrades");
+    upgradesContainer.innerHTML = '';
+    for (let i = currentUpgrade; i < upgradeLevels.length; i++) {
+        const button = document.createElement("button");
+        button.innerText = `${translations[language].buyUpgrade}: +${upgradeLevels[i].bonus} Tap (${upgradeLevels[i].cost} TSwap)`;
+        button.onclick = () => buyUpgrade(i);
+        upgradesContainer.appendChild(button);
+    }
+}
+
+// Atidaro profilio meniu
+function openProfileMenu() {
+    document.getElementById("profile-menu").style.display = "block";
+}
+
+// Pradinis taškų ir kalbos atnaujinimas
 updateScore();
