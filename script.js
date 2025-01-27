@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const scoreDisplay = document.getElementById("score");
     let isJumping = false;
     let score = 0;
-    let gameSpeed = 2000;
 
     function jump() {
         if (isJumping) return;
@@ -34,13 +33,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 obstaclePosition = 600;
                 score++;
                 scoreDisplay.textContent = "Taškai: " + score;
-                gameSpeed *= 0.98; // Kiekvieną kartą pagreitina
-                clearInterval(moveInterval);
-                moveObstacle();
             } else {
                 obstaclePosition -= 5;
                 obstacle.style.right = obstaclePosition + "px";
-
+                
                 // Susidūrimo tikrinimas
                 let playerBottom = parseInt(window.getComputedStyle(player).bottom);
                 if (obstaclePosition < 80 && obstaclePosition > 20 && playerBottom < 50) {
