@@ -1,30 +1,42 @@
-const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple'];
-const colorToGuess = document.getElementById('color-to-guess');
-const buttonsContainer = document.getElementById('buttons-container');
-const startButton = document.getElementById('start-button');
+let score = 0;
+let gameInterval;
+let targetInterval;
 
-let correctColor = '';
+// Žaidimo laukelis
+const gameArea = document.getElementById('game-area');
+const scoreElement = document.getElementById('score');
 
-function startGame() {
-    buttonsContainer.innerHTML = '';
-    correctColor = colors[Math.floor(Math.random() * colors.length)];
-    colorToGuess.textContent = `Pasirinkite: ${correctColor}`;
+// Funkcija sukurti taikinį
+function createTarget() {
+    const target = document.createElement('div');
+    target.classList.add('target');
+    target.style.top = `${Math.random() * (gameArea.clientHeight - 50)}px`;
+    target.style.left = `${Math.random() * (gameArea.clientWidth - 50)}px`;
 
-    colors.forEach(color => {
-        const button = document.createElement('button');
-        button.classList.add('color-button');
-        button.style.backgroundColor = color;
-        button.addEventListener('click', () => checkAnswer(color));
-        buttonsContainer.appendChild(button);
+    // Pridedame šaudymo mechanizmą
+    target.addEventListener('click', () => {
+        score += 10;
+        scoreElement.textContent = `Score: ${score}`;
+        target.remove();  // Pašalinti taikinį po šūvio
     });
+
+    gameArea.appendChild(target);
 }
 
-function checkAnswer(selectedColor) {
-    if (selectedColor === correctColor) {
-        alert('Teisingai! Žaidimas baigtas.');
-    } else {
-        alert('Klaida. Bandykite dar kartą.');
-    }
+// Funkcija pradėti žaidimą
+function startGame() {
+    score = 0;
+    scoreElement.textContent = `Score: ${score}`;
+
+    // Sukuriame taikinius kas 2 sekundes
+    targetInterval = setInterval(createTarget, 2000);
+
+    // Žaidimas trunka 60 sekundžių
+    gameInterval = setTimeout(() => {
+        clearInterval(targetInterval);  // Sustabdyti taikinių kūrimą
+        alert(`Game Over! Your score: ${score}`);
+    }, 60000);
 }
 
-startButton.addEventListener('click', startGame);
+// Pradėti žaidimą automatiškai, kai pasikrauna puslapis
+window.onload = startGame;
