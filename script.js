@@ -19,7 +19,9 @@ const translations = {
         buyUpgrade: "Nusipirkite patobulinimą",
         insufficientPoints: "Trūksta taškų!",
         upgradeSuccess: "Patobulinimas įsigytas!",
-        languageChange: "Kalbos pakeitimas"
+        languageChange: "Kalbos pakeitimas",
+        convertPoints: "Paversti taškus į Tswap",
+        minPointsRequired: "Min 1000 taškų = 1 Tswap"
     },
     en: {
         balance: "Balance",
@@ -29,7 +31,9 @@ const translations = {
         buyUpgrade: "Buy upgrade",
         insufficientPoints: "Not enough points!",
         upgradeSuccess: "Upgrade purchased!",
-        languageChange: "Language Change"
+        languageChange: "Language Change",
+        convertPoints: "Convert points to Tswap",
+        minPointsRequired: "Min 1000 points = 1 Tswap"
     },
     ru: {
         balance: "Баланс",
@@ -39,7 +43,9 @@ const translations = {
         buyUpgrade: "Купить улучшение",
         insufficientPoints: "Недостаточно очков!",
         upgradeSuccess: "Улучшение куплено!",
-        languageChange: "Изменить язык"
+        languageChange: "Изменить язык",
+        convertPoints: "Преобразовать очки в Tswap",
+        minPointsRequired: "Мин. 1000 очков = 1 Tswap"
     }
 };
 
@@ -50,6 +56,7 @@ function changeLanguage(lang) {
     document.getElementById("tswap-balance").innerText = `${translations[language].tswap}: ${tswapBalance}`;
     document.getElementById("coin").innerText = "💰";
     document.getElementById("shop").innerText = translations[language].shop;
+    document.getElementById("tswap-conversion").innerText = translations[language].convertPoints;
     document.getElementById("profile-menu").style.display = "none";
 }
 
@@ -91,27 +98,11 @@ function buyUpgrade(level) {
         perClick = upgradeLevels[level].bonus;
         updateScore();
         alert(translations[language].upgradeSuccess);
+        currentUpgrade = level + 1;  // Nusipirkus, pereina į kitą lygį
     } else {
         alert(translations[language].insufficientPoints);
     }
 }
 
 // Rodo patobulinimų sąrašą
-function renderUpgrades() {
-    const upgradesContainer = document.getElementById("upgrades");
-    upgradesContainer.innerHTML = '';
-    for (let i = currentUpgrade; i < upgradeLevels.length; i++) {
-        const button = document.createElement("button");
-        button.innerText = `${translations[language].buyUpgrade}: +${upgradeLevels[i].bonus} Tap (${upgradeLevels[i].cost} TSwap)`;
-        button.onclick = () => buyUpgrade(i);
-        upgradesContainer.appendChild(button);
-    }
-}
-
-// Atidaro profilio meniu
-function openProfileMenu() {
-    document.getElementById("profile-menu").style.display = "block";
-}
-
-// Pradinis taškų ir kalbos atnaujinimas
-updateScore();
+function renderUp

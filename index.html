@@ -23,9 +23,9 @@
             <div id="coin" onclick="earnPoints()">💰</div>
         </div>
 
-        <!-- Parduotuvės ir patobulinimų -->
+        <!-- Parduotuvė su patobulinimais -->
         <div id="shop" onclick="toggleShop()">
-            <span>Parduotuvė</span>
+            <span>🛒 Parduotuvė</span>
         </div>
         <div id="shop-menu" style="display:none;">
             <div id="upgrades">
@@ -38,6 +38,20 @@
             <button onclick="changeLanguage('lt')">Lietuvių</button>
             <button onclick="changeLanguage('en')">English</button>
             <button onclick="changeLanguage('ru')">Русский</button>
+        </div>
+
+        <!-- Tswap keitimo -->
+        <div id="tswap-conversion">
+            <button onclick="showConversionModal()">Paversti taškus į Tswap</button>
+        </div>
+        
+        <!-- Tswap keitimo modalas -->
+        <div id="conversion-modal" style="display:none;">
+            <div id="conversion-content">
+                <input type="number" id="points-input" placeholder="Įveskite taškų kiekį">
+                <button onclick="convertToTswap()">Paversti</button>
+                <button onclick="closeConversionModal()">Uždaryti</button>
+            </div>
         </div>
     </div>
 

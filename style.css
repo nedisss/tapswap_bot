@@ -62,3 +62,24 @@ body {
     font-size: 18px;
     cursor: pointer;
 }
+
+#tswap-conversion {
+    margin-top: 30px;
+}
+
+#conversion-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#conversion-content input {
+    margin: 10px;
+    padding: 10px;
+    font-size: 18px;
+    width: 200px;
+}
