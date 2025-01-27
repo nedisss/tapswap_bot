@@ -1,60 +1,18 @@
 <!DOCTYPE html>
-<html lang="lt">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tswap Žaidimas</title>
+    <title>Spalvų Žaidimas</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="game-container">
-        <!-- Profilio ir kalbos pasirinkimai -->
-        <div id="profile" onclick="openProfileMenu()">
-            <img src="profile-pic.png" alt="Profile" id="profile-pic">
-            <span id="username">Vardas</span>
-        </div>
-
-        <!-- Balansas ir monetos -->
-        <div id="balance-container">
-            <div id="balance">
-                <span id="score-text">Balansas: 0 TSwap</span>
-                <span id="tswap-balance">TSwap: 0</span>
-            </div>
-            <div id="coin" onclick="earnPoints()">💰</div>
-        </div>
-
-        <!-- Parduotuvė su patobulinimais -->
-        <div id="shop" onclick="toggleShop()">
-            <span>🛒 Parduotuvė</span>
-        </div>
-        <div id="shop-menu" style="display:none;">
-            <div id="upgrades">
-                <!-- Patobulinimai bus rodomi čia -->
-            </div>
-        </div>
-
-        <!-- Profilio nustatymai -->
-        <div id="profile-menu" style="display:none;">
-            <button onclick="changeLanguage('lt')">Lietuvių</button>
-            <button onclick="changeLanguage('en')">English</button>
-            <button onclick="changeLanguage('ru')">Русский</button>
-        </div>
-
-        <!-- Tswap keitimo -->
-        <div id="tswap-conversion">
-            <button onclick="showConversionModal()">Paversti taškus į Tswap</button>
-        </div>
-        
-        <!-- Tswap keitimo modalas -->
-        <div id="conversion-modal" style="display:none;">
-            <div id="conversion-content">
-                <input type="number" id="points-input" placeholder="Įveskite taškų kiekį">
-                <button onclick="convertToTswap()">Paversti</button>
-                <button onclick="closeConversionModal()">Uždaryti</button>
-            </div>
-        </div>
+        <h1>Spalvų Žaidimas</h1>
+        <div id="color-to-guess">Spalva</div>
+        <div id="buttons-container"></div>
+        <button id="start-button">Pradėti Žaidimą</button>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
