@@ -1,106 +1,41 @@
-/* Bendra žaidimo stilistika */
 body {
-    text-align: center;
     font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: white;
-    margin: 0;
-    padding: 0;
-}
-
-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #1e1e1e;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
 }
 
-#language-selector button {
-    background-color: #ffcc00;
-    color: black;
-    border: none;
-    padding: 5px 10px;
-    margin: 0 5px;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.2s;
+#app {
+    text-align: center;
 }
 
-#language-selector button:hover {
-    background-color: #e6b800;
-}
-
-#balance {
-    font-size: 18px;
-    color: #ffcc00;
-}
-
-main {
-    margin: 20px;
-}
-
-/* Taškų rodymas */
-#score {
-    font-size: 24px;
-    margin: 20px;
-}
-
-/* Moneta */
 #coin {
-    width: 150px;
-    height: 150px;
-    background: url('coin.png') no-repeat center;
-    background-size: cover;
-    border-radius: 50%;
-    cursor: pointer;
-    display: inline-block;
-    transition: transform 0.1s;
+    font-size: 80px;
 }
 
-/* Paspaudimo efektas */
-#coin:active {
-    transform: scale(0.9);
-}
-
-/* Parduotuvės konteineris */
 #shop {
     margin-top: 20px;
-    background-color: #1e1e1e;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-#shop h3 {
-    margin: 0 0 10px;
+#upgrades button {
+    margin: 5px;
+    padding: 10px;
+    font-size: 16px;
 }
 
-/* Mygtukai */
 button {
-    background-color: #ffcc00;
-    color: black;
-    border: none;
-    padding: 10px 20px;
-    margin: 10px;
-    font-size: 18px;
     cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.2s;
-}
-
-button:hover {
-    background-color: #e6b800;
-}
-
-button:disabled {
-    background-color: gray;
-    cursor: not-allowed;
 }
 
 #botStatus {
+    margin-top: 10px;
+    font-size: 18px;
+    color: green;
+}
+
+#balance, #shop-button, #buy-bot {
     font-size: 20px;
-    margin-top: 20px;
-    color: #ffcc00;
 }

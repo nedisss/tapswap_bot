@@ -3,34 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TapSwap Žaidimas</title>
+    <title>Telegram Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <div id="language-selector">
-            <button onclick="changeLanguage('lt')">LT</button>
-            <button onclick="changeLanguage('en')">EN</button>
-            <button onclick="changeLanguage('ru')">RU</button>
-        </div>
-        <h2 id="balance">Balansas: 0 TSwap</h2>
-    </header>
-
-    <main>
-        <h1>TapSwap Žaidimas</h1>
-        <div id="coin"></div>
-
-        <button id="shop-button" onclick="toggleShop()">Žinoti parduotuvė</button>
-
+    <div id="app">
+        <div id="balance"></div>
+        <div id="shop-button" onclick="toggleShop()"></div>
         <div id="shop" style="display: none;">
-            <h3>Parduotuvė</h3>
             <div id="upgrades"></div>
-            <button onclick="buyBot()">Automatinis Botas (100,000 TSwap)</button>
+            <button id="buy-bot" onclick="buyBot()">Buy Auto Bot</button>
         </div>
-
-        <p id="botStatus" style="display: none;">Boto likęs laikas: <span id="botTimer">60:00</span></p>
-    </main>
-
-    <script src="script.js" defer></script>
+        <div id="coin" style="cursor: pointer;">💰</div>
+        <div id="botStatus" style="display: none;">
+            <span>Bot active! Time left: </span><span id="botTimer"></span>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
 </body>
 </html>

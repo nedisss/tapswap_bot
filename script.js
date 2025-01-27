@@ -1,16 +1,11 @@
-// Telegram WebApp integracija
 let tg = window.Telegram.WebApp;
-tg.expand(); // Išplečia WebApp
+tg.expand(); // Expands the WebApp
 
-// Gauk vartotojo ID iš Telegram
-const userId = tg.initDataUnsafe?.user?.id || null;
+// Get user ID from Telegram
+const userId = tg.initDataUnsafe?.user?.id || "guest";
 
-if (!userId) {
-    alert("Nepavyko gauti Telegram vartotojo ID.");
-}
-
-// Taškų ir perTap pradinės reikšmės
-let score = 0;
+// Initialize score (use localStorage for persistence)
+let score = parseInt(localStorage.getItem("tswap_score")) || 0;
 let perTap = 1;
 let botActive = false;
 let language = "lt";
@@ -19,51 +14,47 @@ const upgradeLevels = Array.from({ length: 24 }, (_, i) => ({
     bonus: i + 1,
 }));
 
-// Kalbos vertimai
+// Language translations
 const translations = {
     lt: {
         balance: "Balansas",
         shop: "Parduotuvė",
         buyBot: "Automatinis Botas (100,000 TSwap)",
         botExpired: "Boto laikas baigėsi!",
+        tap: "Spauskite moneta, kad gautumėte taškų",
     },
     en: {
         balance: "Balance",
         shop: "Shop",
         buyBot: "Auto Bot (100,000 TSwap)",
         botExpired: "Bot time expired!",
+        tap: "Click the coin to earn points",
     },
     ru: {
         balance: "Баланс",
         shop: "Магазин",
         buyBot: "Автобот (100,000 TSwap)",
         botExpired: "Время бота истекло!",
+        tap: "Нажмите на монету, чтобы заработать очки",
     },
 };
 
-// Atkurk taškus iš serverio (jeigu naudojama serverio saugykla)
-fetch(`https://tavo-serverio-adresas/get_score?userId=${userId}`)
-    .then(response => response.json())
-    .then(data => {
-        score = data.score || 0;
-        perTap = data.perTap || 1;
-        updateScore();
-    })
-    .catch(err => console.error("Nepavyko gauti taškų:", err));
-
-// Atnaujina taškus ekrane
-function updateScore() {
+// Update language and text
+function updateLanguage() {
     document.getElementById("balance").innerText = `${translations[language].balance}: ${score} TSwap`;
+    document.getElementById("shop-button").innerText = translations[language].shop;
+    document.getElementById("buy-bot").innerText = translations[language].buyBot;
+    document.getElementById("coin").innerText = "💰";
 }
 
-// Rodo/paslėpia parduotuvės meniu
+// Toggle shop visibility
 function toggleShop() {
     const shop = document.getElementById("shop");
     shop.style.display = shop.style.display === "none" ? "block" : "none";
     if (shop.style.display === "block") renderUpgrades();
 }
 
-// Kuria parduotuvės patobulinimus
+// Render upgrades in the shop
 function renderUpgrades() {
     const upgradesContainer = document.getElementById("upgrades");
     upgradesContainer.innerHTML = "";
@@ -75,42 +66,37 @@ function renderUpgrades() {
     });
 }
 
-// Kai spausi ant monetos
+// Click event for coin
 document.getElementById("coin").addEventListener("click", function () {
     score += perTap;
     updateScore();
     saveScore();
 });
 
-// Išsaugo taškus serveryje
+// Save score to localStorage
 function saveScore() {
-    fetch("https://tavo-serverio-adresas/save_score", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            userId: userId,
-            score: score,
-            perTap: perTap
-        })
-    }).catch(err => console.error("Nepavyko išsaugoti taškų:", err));
+    localStorage.setItem("tswap_score", score);
 }
 
-// Parduotuvė: perka „upgradus“
+// Update the displayed score
+function updateScore() {
+    document.getElementById("balance").innerText = `${translations[language].balance}: ${score} TSwap`;
+}
+
+// Buy an upgrade
 function buyUpgrade(level, cost, bonus) {
     if (score >= cost) {
         score -= cost;
         perTap = bonus;
         updateScore();
         saveScore();
-        alert(`Dabar už paspaudimą gauni: ${perTap}`);
+        alert(`Now you earn: ${perTap} per tap!`);
     } else {
-        alert("Tau trūksta taškų!");
+        alert("You don't have enough points!");
     }
 }
 
-// Automatinio boto pirkimas
+// Buy Auto Bot
 function buyBot() {
     const cost = 100000;
     if (score >= cost && !botActive) {
@@ -122,11 +108,11 @@ function buyBot() {
         const botStatus = document.getElementById("botStatus");
         botStatus.style.display = "block";
 
-        let timeLeft = 3600; // 60 minučių
+        let timeLeft = 3600; // 60 minutes
         const botTimer = document.getElementById("botTimer");
 
         const interval = setInterval(() => {
-            score += 120; // Botas duoda po 120 TSwap kas 0.5 sekundės
+            score += 120; // Bot earns 120 TSwap every 0.5 second
             updateScore();
             saveScore();
 
@@ -141,24 +127,24 @@ function buyBot() {
             }
         }, 500);
     } else {
-        alert("Tau trūksta taškų arba botas jau veikia!");
+        alert("You don't have enough points or the bot is already active!");
     }
 }
 
-// Pagalbinė funkcija laikui formatuoti
+// Format time for bot countdown
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
 }
 
-// Keisti kalbą
+// Change language
 function changeLanguage(lang) {
     language = lang;
-    document.getElementById("shop-button").innerText = translations[language].shop;
-    updateScore();
+    updateLanguage();
     renderUpgrades();
 }
 
-// Pradinis taškų atnaujinimas
+// Initial update
 updateScore();
+updateLanguage();
