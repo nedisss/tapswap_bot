@@ -8,7 +8,7 @@ const userId = tg.initDataUnsafe?.user?.id || "guest";
 let score = parseInt(localStorage.getItem("tswap_score")) || 0;
 let perTap = 1;
 let botActive = false;
-let language = "lt";
+let language = localStorage.getItem("language") || "lt";
 const upgradeLevels = Array.from({ length: 24 }, (_, i) => ({
     cost: 200 + i * 100,
     bonus: i + 1,
@@ -39,12 +39,13 @@ const translations = {
     },
 };
 
-// Update language and text
+// Change language and update text
 function updateLanguage() {
     document.getElementById("balance").innerText = `${translations[language].balance}: ${score} TSwap`;
     document.getElementById("shop-button").innerText = translations[language].shop;
     document.getElementById("buy-bot").innerText = translations[language].buyBot;
     document.getElementById("coin").innerText = "💰";
+    document.getElementById("game-name").innerText = translations[language].tap;
 }
 
 // Toggle shop visibility
@@ -141,10 +142,11 @@ function formatTime(seconds) {
 // Change language
 function changeLanguage(lang) {
     language = lang;
+    localStorage.setItem("language", lang); // Save selected language to localStorage
     updateLanguage();
     renderUpgrades();
 }
 
-// Initial update
-updateScore();
+// Initial setup
 updateLanguage();
+updateScore();

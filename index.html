@@ -3,23 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Game</title>
+    <title>TSwap Žaidimas</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
+        <div id="header">
+            <span id="game-name" onclick="window.location.href='index.html'">TSwap Žaidimas</span>
+            <div id="language-selector">
+                <button onclick="changeLanguage('lt')">LT</button>
+                <button onclick="changeLanguage('en')">EN</button>
+                <button onclick="changeLanguage('ru')">RU</button>
+            </div>
+        </div>
+
         <div id="balance"></div>
         <div id="shop-button" onclick="toggleShop()"></div>
         <div id="shop" style="display: none;">
             <div id="upgrades"></div>
             <button id="buy-bot" onclick="buyBot()">Buy Auto Bot</button>
         </div>
+        
         <div id="coin" style="cursor: pointer;">💰</div>
         <div id="botStatus" style="display: none;">
             <span>Bot active! Time left: </span><span id="botTimer"></span>
         </div>
     </div>
-    
+
     <script src="script.js"></script>
 </body>
 </html>

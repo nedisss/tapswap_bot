@@ -6,14 +6,40 @@ body {
     height: 100vh;
     margin: 0;
     background-color: #f4f4f4;
+    text-align: center;
 }
 
 #app {
-    text-align: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#game-name {
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#language-selector button {
+    font-size: 18px;
+    margin: 0 5px;
+}
+
+#balance, #shop-button, #buy-bot, #coin {
+    font-size: 20px;
+    margin-top: 10px;
 }
 
 #coin {
     font-size: 80px;
+    cursor: pointer;
 }
 
 #shop {
@@ -36,6 +62,7 @@ button {
     color: green;
 }
 
-#balance, #shop-button, #buy-bot {
+#balance {
     font-size: 20px;
+    margin-bottom: 20px;
 }
