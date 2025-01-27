@@ -105,4 +105,37 @@ function buyUpgrade(level) {
 }
 
 // Rodo patobulinimų sąrašą
-function renderUp
+function renderUpgrades() {
+    const upgradesContainer = document.getElementById("upgrades");
+    upgradesContainer.innerHTML = '';
+    for (let i = currentUpgrade; i < upgradeLevels.length; i++) {
+        const button = document.createElement("button");
+        button.innerText = `${translations[language].buyUpgrade}: +${upgradeLevels[i].bonus} Tap (${upgradeLevels[i].cost} TSwap)`;
+        button.onclick = () => buyUpgrade(i);
+        upgradesContainer.appendChild(button);
+    }
+}
+
+// Tswap keitimo funkcijos
+function showConversionModal() {
+    const modal = document.getElementById("conversion-modal");
+    modal.style.display = "block";
+}
+
+function closeConversionModal() {
+    const modal = document.getElementById("conversion-modal");
+    modal.style.display = "none";
+}
+
+function convertToTswap() {
+    let pointsToConvert = parseInt(document.getElementById("points-input").value);
+    if (pointsToConvert >= 1000) {
+        let tswapAmount = Math.floor(pointsToConvert / 1000);
+        score -= pointsToConvert;
+        tswapBalance += tswapAmount;
+        updateScore();
+        closeConversionModal();
+    } else {
+        alert(translations[language].minPointsRequired);
+    }
+}
