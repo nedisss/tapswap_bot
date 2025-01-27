@@ -8,6 +8,39 @@ body {
     padding: 0;
 }
 
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #1e1e1e;
+}
+
+#language-selector button {
+    background-color: #ffcc00;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    margin: 0 5px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.2s;
+}
+
+#language-selector button:hover {
+    background-color: #e6b800;
+}
+
+#balance {
+    font-size: 18px;
+    color: #ffcc00;
+}
+
+main {
+    margin: 20px;
+}
+
 /* Taškų rodymas */
 #score {
     font-size: 24px;
@@ -34,6 +67,14 @@ body {
 /* Parduotuvės konteineris */
 #shop {
     margin-top: 20px;
+    background-color: #1e1e1e;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#shop h3 {
+    margin: 0 0 10px;
 }
 
 /* Mygtukai */
@@ -57,22 +98,9 @@ button:disabled {
     background-color: gray;
     cursor: not-allowed;
 }
+
 #botStatus {
     font-size: 20px;
     margin-top: 20px;
     color: #ffcc00;
-}
-#coin {
-    width: 150px;
-    height: 150px;
-    background: url('coin.png') no-repeat center; /* Naudoja tavo paveikslėlį */
-    background-size: cover;
-    border-radius: 50%; /* Jei nori apskritimo */
-    cursor: pointer;
-    display: inline-block;
-    transition: transform 0.1s;
-}
-
-#coin:active {
-    transform: scale(0.9); /* Efektas paspaudus */
 }

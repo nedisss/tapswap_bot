@@ -13,6 +13,33 @@ if (!userId) {
 let score = 0;
 let perTap = 1;
 let botActive = false;
+let language = "lt";
+const upgradeLevels = Array.from({ length: 24 }, (_, i) => ({
+    cost: 200 + i * 100,
+    bonus: i + 1,
+}));
+
+// Kalbos vertimai
+const translations = {
+    lt: {
+        balance: "Balansas",
+        shop: "Parduotuvė",
+        buyBot: "Automatinis Botas (100,000 TSwap)",
+        botExpired: "Boto laikas baigėsi!",
+    },
+    en: {
+        balance: "Balance",
+        shop: "Shop",
+        buyBot: "Auto Bot (100,000 TSwap)",
+        botExpired: "Bot time expired!",
+    },
+    ru: {
+        balance: "Баланс",
+        shop: "Магазин",
+        buyBot: "Автобот (100,000 TSwap)",
+        botExpired: "Время бота истекло!",
+    },
+};
 
 // Atkurk taškus iš serverio (jeigu naudojama serverio saugykla)
 fetch(`https://tavo-serverio-adresas/get_score?userId=${userId}`)
@@ -26,9 +53,26 @@ fetch(`https://tavo-serverio-adresas/get_score?userId=${userId}`)
 
 // Atnaujina taškus ekrane
 function updateScore() {
-    document.getElementById("score").innerText = score;
-    tg.MainButton.text = `Tavo taškai: ${score}`; // Rodo taškus Telegram mygtuke
-    tg.MainButton.show();
+    document.getElementById("balance").innerText = `${translations[language].balance}: ${score} TSwap`;
+}
+
+// Rodo/paslėpia parduotuvės meniu
+function toggleShop() {
+    const shop = document.getElementById("shop");
+    shop.style.display = shop.style.display === "none" ? "block" : "none";
+    if (shop.style.display === "block") renderUpgrades();
+}
+
+// Kuria parduotuvės patobulinimus
+function renderUpgrades() {
+    const upgradesContainer = document.getElementById("upgrades");
+    upgradesContainer.innerHTML = "";
+    upgradeLevels.forEach((level, index) => {
+        const button = document.createElement("button");
+        button.innerText = `+${level.bonus} Tap (${level.cost} TSwap)`;
+        button.onclick = () => buyUpgrade(index + 1, level.cost, level.bonus);
+        upgradesContainer.appendChild(button);
+    });
 }
 
 // Kai spausi ant monetos
@@ -60,14 +104,15 @@ function buyUpgrade(level, cost, bonus) {
         perTap = bonus;
         updateScore();
         saveScore();
-        alert("Dabar už paspaudimą gauni: " + perTap);
+        alert(`Dabar už paspaudimą gauni: ${perTap}`);
     } else {
         alert("Tau trūksta taškų!");
     }
 }
 
 // Automatinio boto pirkimas
-function buyBot(cost, multiplier) {
+function buyBot() {
+    const cost = 100000;
     if (score >= cost && !botActive) {
         score -= cost;
         botActive = true;
@@ -81,7 +126,7 @@ function buyBot(cost, multiplier) {
         const botTimer = document.getElementById("botTimer");
 
         const interval = setInterval(() => {
-            score += perTap * multiplier;
+            score += 120; // Botas duoda po 120 TSwap kas 0.5 sekundės
             updateScore();
             saveScore();
 
@@ -92,9 +137,9 @@ function buyBot(cost, multiplier) {
                 clearInterval(interval);
                 botActive = false;
                 botStatus.style.display = "none";
-                alert("Boto laikas baigėsi!");
+                alert(translations[language].botExpired);
             }
-        }, 1000);
+        }, 500);
     } else {
         alert("Tau trūksta taškų arba botas jau veikia!");
     }
@@ -105,6 +150,14 @@ function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+}
+
+// Keisti kalbą
+function changeLanguage(lang) {
+    language = lang;
+    document.getElementById("shop-button").innerText = translations[language].shop;
+    updateScore();
+    renderUpgrades();
 }
 
 // Pradinis taškų atnaujinimas

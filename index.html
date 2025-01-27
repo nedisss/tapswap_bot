@@ -7,22 +7,30 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>TapSwap Žaidimas</h1>
-    <h2>Taškai: <span id="score">0</span></h2>
-    <div id="coin"></div>
-    <h3>Parduotuvė</h3>
-    <div id="shop">
-        <button onclick="buyUpgrade(1, 500, 2)">+1 Tap (500 taškų)</button>
-        <button onclick="buyUpgrade(2, 600, 5)">+5 Tap (600 taškų)</button>
-        <button onclick="buyUpgrade(3, 1500, 100)">+100 Tap (1500 taškų)</button>
-        <button onclick="buyBot(20000, 3)">Automatinis Botas (20,000 taškų)</button>
-    </div>
-    <p id="botStatus" style="display: none;">Boto likęs laikas: <span id="botTimer">60:00</span></p>
-    
+    <header>
+        <div id="language-selector">
+            <button onclick="changeLanguage('lt')">LT</button>
+            <button onclick="changeLanguage('en')">EN</button>
+            <button onclick="changeLanguage('ru')">RU</button>
+        </div>
+        <h2 id="balance">Balansas: 0 TSwap</h2>
+    </header>
+
+    <main>
+        <h1>TapSwap Žaidimas</h1>
+        <div id="coin"></div>
+
+        <button id="shop-button" onclick="toggleShop()">Žinoti parduotuvė</button>
+
+        <div id="shop" style="display: none;">
+            <h3>Parduotuvė</h3>
+            <div id="upgrades"></div>
+            <button onclick="buyBot()">Automatinis Botas (100,000 TSwap)</button>
+        </div>
+
+        <p id="botStatus" style="display: none;">Boto likęs laikas: <span id="botTimer">60:00</span></p>
+    </main>
+
     <script src="script.js" defer></script>
 </body>
 </html>
-
-<div id="coin">
-    <img src="coin.png" alt="Moneta" style="width: 150px; height: 150px; border-radius: 50%; cursor: pointer;">
-</div>
